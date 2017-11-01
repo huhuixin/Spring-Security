@@ -3,15 +3,19 @@ package com.hhx.entity;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.hhx.validator.UsernameValidtor;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Collection;
 import java.util.Date;
 
 @Entity
-public class User {
+public class User implements UserDetails{
 
     public interface SimpleUserView {};//返回列表
     public interface UserDetail extends SimpleUserView{};//返回详情
@@ -71,5 +75,35 @@ public class User {
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        //用户权限列表
+        return AuthorityUtils.commaSeparatedStringToAuthorityList("admin");
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        //账户是否过期
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        //账户是否被锁定
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        //密码是否过期
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        //账户是否可用
+        return true;
     }
 }

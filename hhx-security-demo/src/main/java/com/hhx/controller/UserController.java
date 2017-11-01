@@ -1,4 +1,4 @@
-package com.hhx.Controller;
+package com.hhx.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.hhx.entity.User;

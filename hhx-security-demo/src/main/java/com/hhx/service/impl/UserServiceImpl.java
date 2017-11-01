@@ -7,12 +7,16 @@ import com.hhx.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService,UserDetailsService{
 
     @Autowired
     private UserRepository repository;
@@ -55,5 +59,11 @@ public class UserServiceImpl implements UserService{
 //        Example<User> example = Example.of(user,matcher);
 //        return repository.findAll(example,pageable);
         return repository.findAll(pageable);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
+        List<User> list = repository.getByUsername(name);
+        return list.isEmpty()?null:list.get(0);
     }
 }
