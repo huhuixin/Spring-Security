@@ -14,4 +14,6 @@ public class SecurityProperties {
     public void setBrowser(BrowserProperties browser) {
         this.browser = browser;
     }
+
+
 }
