@@ -1,6 +1,7 @@
 package com.hhx.security.browser.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hhx.security.browser.support.SimpleResponse;
 import com.hhx.sercurity.core.properties.LoginType;
 import com.hhx.sercurity.core.properties.SecurityProperties;
 import org.slf4j.Logger;
@@ -36,7 +37,8 @@ public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailu
             //转换为json字符串输出
             httpServletResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             httpServletResponse.setContentType("application/json");
-            httpServletResponse.getWriter().write(objectMapper.writeValueAsString(e));
+            httpServletResponse.getWriter()
+                    .write(objectMapper.writeValueAsString(new SimpleResponse(e.getMessage())));
         }else{
             super.onAuthenticationFailure(httpServletRequest,httpServletResponse,e);
         }
